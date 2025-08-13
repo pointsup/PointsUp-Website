@@ -13,8 +13,30 @@ export function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Google Analytics tracking
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'form_submit', {
+        event_category: 'Contact Form',
+        event_label: 'Contact Form Submission',
+        value: 1
+      })
+    }
+    
     // Handle form submission here
     console.log("Form submitted:", formData)
+    
+    // Show success message
+    alert("Thank you for your message! We'll get back to you soon.")
+    
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+      consent: false
+    })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

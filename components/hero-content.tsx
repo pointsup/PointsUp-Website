@@ -13,6 +13,15 @@ export function HeroContent() {
   }, [])
 
   const scrollToServices = () => {
+    // Google Analytics tracking
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'button_click', {
+        event_category: 'Hero Section',
+        event_label: 'View Services Button',
+        value: 1
+      })
+    }
+    
     document.getElementById("services")?.scrollIntoView({
       behavior: "smooth",
       block: "start",

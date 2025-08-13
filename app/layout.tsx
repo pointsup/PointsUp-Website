@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { GoogleAnalytics } from '@next/third-parties/google'
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -26,7 +27,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={inter.className} suppressHydrationWarning>{children}</body>
+      <body className={inter.className} suppressHydrationWarning>
+        {children}
+        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+      </body>
     </html>
   )
 }
