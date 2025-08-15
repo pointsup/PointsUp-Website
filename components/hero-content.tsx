@@ -29,15 +29,15 @@ export function HeroContent() {
   }
 
   return (
-    <div className="relative z-10 flex h-full items-center mt-[6%]">
-      <div className="container px-4 md:px-6">
-        <div className="max-w-2xl space-y-6 -ml-[35%]">
+    <div className="relative z-10 flex h-full items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
+        <div className="max-w-2xl mx-auto text-center sm:text-left space-y-4 sm:space-y-6">
           <div
-            className={`transform transition-all duration-1000 ease-out -ml-[10%] ${
+            className={`transform transition-all duration-1000 ease-out ${
               isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
             }`}
           >
-            <h1 className="text-2xl font-normal tracking-tight text-green-600 sm:text-3xl md:text-4xl lg:text-5xl font-nunito animate-fade-lr">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight text-green-600 font-nunito animate-fade-lr leading-tight">
               Elevate your credit
             </h1>
           </div>
@@ -47,7 +47,7 @@ export function HeroContent() {
               isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
             }`}
           >
-            <p className="text-xl text-gray-200 md:text-2xl font-pt-sans">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 font-pt-sans leading-relaxed">
               Experience the power of expert credit solutions
             </p>
           </div>
@@ -59,11 +59,11 @@ export function HeroContent() {
           >
             <button
               onClick={scrollToServices}
-              className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-12 px-8 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 transform"
+              className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 sm:px-8 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 transform"
               suppressHydrationWarning
             >
               View Services 
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 drop-shadow-[0_0_2px_rgba(0,0,0,1)]" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-1 drop-shadow-[0_0_2px_rgba(0,0,0,1)]" />
             </button>
           </div>
         </div>

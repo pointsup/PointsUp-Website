@@ -7,15 +7,17 @@ import { ServiceFeature } from "@/components/service-feature"
 import { ContactForm } from "@/components/contact-form"
 import { TestimonialCarousel } from "@/components/testimonial-carousel"
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function Home() {
   const { scrollY, isScrollingDown } = useScrollAnimation()
+  const isMobile = useIsMobile()
   
-  // Calculate animation values based on scroll
-  const heroTransform = Math.min(scrollY * 0.5, 100) // Push back up to 100px
-  const heroOpacity = Math.max(1 - scrollY * 0.002, 0.3) // Fade out but keep some opacity
-  const heroScale = Math.max(1 - scrollY * 0.0005, 0.8) // Scale down slightly
-  const heroTranslateY = Math.min(scrollY * 0.3, 200) // Slide down up to 200px
+  // Calculate animation values based on scroll - optimized for mobile
+  const heroTransform = Math.min(scrollY * (isMobile ? 0.3 : 0.5), isMobile ? 50 : 100) // Reduced movement on mobile
+  const heroOpacity = Math.max(1 - scrollY * (isMobile ? 0.001 : 0.002), 0.3) // Slower fade on mobile
+  const heroScale = Math.max(1 - scrollY * (isMobile ? 0.0003 : 0.0005), 0.8) // Reduced scale on mobile
+  const heroTranslateY = Math.min(scrollY * (isMobile ? 0.2 : 0.3), isMobile ? 100 : 200) // Reduced movement on mobile
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -34,14 +36,17 @@ export default function Home() {
           <img
             src="/images/pointsup-hero.png"
             alt="Professional working on credit reports with multiple monitors"
-            className="w-full h-full object-cover animate-slow-float"
+            className="w-full h-full object-cover object-center animate-slow-float"
+            style={{
+              objectPosition: isMobile ? 'center 30%' : 'center center'
+            }}
           />
           <div className="absolute inset-0 bg-black/70" />
         </div>
         
-        {/* Floating Elements */}
+        {/* Floating Elements - Hidden on mobile for better performance */}
         <div 
-          className="absolute inset-0 pointer-events-none transition-all duration-700 ease-out"
+          className="absolute inset-0 pointer-events-none transition-all duration-700 ease-out hidden sm:block"
           style={{
             transform: `translateY(${heroTranslateY * 0.5}px)`,
             opacity: Math.max(1 - scrollY * 0.003, 0.2),
@@ -55,7 +60,7 @@ export default function Home() {
         
         {/* Hero Content with Scroll Animation */}
         <div 
-          className="relative z-10 transition-all duration-700 ease-out"
+          className="relative z-10 transition-all duration-700 ease-out w-full"
           style={{
             transform: `translateY(${heroTranslateY}px) scale(${Math.max(1 - scrollY * 0.0003, 0.9)})`,
             opacity: Math.max(1 - scrollY * 0.001, 0.4),
