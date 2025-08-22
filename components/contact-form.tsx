@@ -8,11 +8,22 @@ export function ContactForm() {
     email: "",
     phone: "",
     message: "",
-    consent: false
+    consent: false,
+    company: "" // Honeypot field
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [statusMessage, setStatusMessage] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!formData.consent) {
+      setStatusMessage("Please agree to be contacted about your inquiry.")
+      return
+    }
+    
+    setIsSubmitting(true)
+    setStatusMessage("Sending...")
     
     // Google Analytics tracking
     if (typeof window !== 'undefined' && window.gtag) {
@@ -23,20 +34,32 @@ export function ContactForm() {
       })
     }
     
-    // Handle form submission here
-    console.log("Form submitted:", formData)
-    
-    // Show success message
-    alert("Thank you for your message! We'll get back to you soon.")
-    
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-      consent: false
-    })
+    try {
+      const response = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      if (!response.ok) {
+        throw new Error(await response.text())
+      }
+
+      setStatusMessage("Thanks! We'll reach out shortly.")
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+        consent: false,
+        company: ""
+      })
+    } catch (err) {
+      console.error('Form submission error:', err)
+      setStatusMessage("Oops — please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -56,6 +79,24 @@ export function ContactForm() {
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Honeypot field - hidden by CSS */}
+        <div className="absolute left-[-9999px] opacity-0 pointer-events-none">
+          <label htmlFor="company" className="text-sm font-medium text-gray-300 font-pt-sans">
+            Company
+          </label>
+          <input
+            type="text"
+            id="company"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            className="flex h-10 w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-white"
+            suppressHydrationWarning
+          />
+        </div>
+        
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium text-gray-300 font-pt-sans">
             Full Name
@@ -139,11 +180,26 @@ export function ContactForm() {
         
         <button
           type="submit"
+          disabled={isSubmitting}
           className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-green-500 hover:bg-green-600 text-white py-4 text-lg font-medium transition-all duration-300 hover:shadow-lg hover:shadow-green-500/25 font-pt-sans"
           suppressHydrationWarning
         >
-          Submit
+          {isSubmitting ? "Sending..." : "Submit"}
         </button>
+        
+        {/* Status message */}
+        {statusMessage && (
+          <div 
+            className={`text-sm font-pt-sans mt-4 p-3 rounded-md ${
+              statusMessage.includes("Thanks") 
+                ? "bg-green-500/20 text-green-300 border border-green-500/30" 
+                : "bg-red-500/20 text-red-300 border border-red-500/30"
+            }`}
+            aria-live="polite"
+          >
+            {statusMessage}
+          </div>
+        )}
       </form>
     </div>
   )
