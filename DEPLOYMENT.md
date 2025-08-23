@@ -1,5 +1,7 @@
 # Contact Form Deployment Guide
 
+**Last Updated:** 2025-01-22 - Force redeploy to ensure Netlify function is live
+
 ## Environment Variables Setup
 
 In Netlify → Site settings → Environment variables, add:
@@ -44,6 +46,8 @@ The function allows requests from:
 - https://pointsup.com
 - https://www.pointsup.com
 - http://localhost:5500 (for Live Server dev)
+- http://localhost:3000 (for Next.js dev)
+- http://localhost:3001 (for Next.js dev)
 
 ## Security Features
 
