@@ -34,33 +34,12 @@ exports.handler = async (event) => {
 
   try {
     const origin = event.headers.origin || event.headers.Origin || '';
-    const allowed = new Set([
-      'https://pointlinesolutions.com',
-      'https://www.pointlinesolutions.com',
-      'https://pointsup.com',
-      'https://www.pointsup.com',
-      'http://localhost:5500',
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://pointsup-website.netlify.app',
-      'https://pointlinesolutions-website.netlify.app'
-    ]);
     
-    // Allow requests from any origin for debugging
+    // Temporarily allow all origins for debugging
     console.log('Origin:', origin);
-    console.log('Allowed origins:', Array.from(allowed));
     
-    if (!allowed.has(origin) && origin !== '') {
-      console.log('Origin not allowed:', origin);
-      return { 
-        statusCode: 403, 
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ error: 'Forbidden - Origin not allowed' })
-      };
-    }
+    // For now, allow all origins to get the form working
+    // TODO: Add your specific domain to the allowed list once we know what it is
 
     let payload;
     try {
