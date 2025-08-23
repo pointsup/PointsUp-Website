@@ -1,6 +1,13 @@
 const crypto = require('crypto');
 
 exports.handler = async (event) => {
+  console.log('Function called with:', {
+    method: event.httpMethod,
+    path: event.path,
+    headers: event.headers,
+    body: event.body
+  });
+
   // CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -88,6 +95,18 @@ exports.handler = async (event) => {
       body: JSON.stringify({ ok: true })
     };
   } catch (e) {
-    return { statusCode: 500, body: `Server error: ${e.message}` };
+    console.error('Function error:', e);
+    return { 
+      statusCode: 500, 
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        error: true, 
+        message: `Server error: ${e.message}`,
+        details: e.stack 
+      })
+    };
   }
 };
