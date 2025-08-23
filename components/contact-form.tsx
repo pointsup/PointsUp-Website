@@ -35,14 +35,37 @@ export function ContactForm() {
     }
     
     try {
+      console.log('Submitting form data:', formData);
+      
       const response = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       })
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      const responseText = await response.text();
+      console.log('Response body:', responseText);
+
       if (!response.ok) {
-        throw new Error(await response.text())
+        throw new Error(`HTTP ${response.status}: ${responseText}`);
+      }
+
+      // Try to parse JSON response
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        console.log('Response is not JSON, treating as plain text');
+        responseData = { message: responseText };
+      }
+
+      console.log('Parsed response:', responseData);
+
+      if (responseData.error) {
+        throw new Error(responseData.message || responseData.error);
       }
 
       setStatusMessage("Thanks! We'll reach out shortly.")
@@ -56,7 +79,7 @@ export function ContactForm() {
       })
     } catch (err) {
       console.error('Form submission error:', err)
-      setStatusMessage("Oops — please try again.")
+      setStatusMessage(`Error: ${err.message}`)
     } finally {
       setIsSubmitting(false)
     }
