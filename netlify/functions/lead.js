@@ -34,12 +34,7 @@ exports.handler = async (event) => {
 
   try {
     const origin = event.headers.origin || event.headers.Origin || '';
-    
-    // Temporarily allow all origins for debugging
     console.log('Origin:', origin);
-    
-    // For now, allow all origins to get the form working
-    // TODO: Add your specific domain to the allowed list once we know what it is
 
     let payload;
     try {
@@ -64,7 +59,7 @@ exports.handler = async (event) => {
       return { 
         statusCode: 200, 
         headers: {
-          'Access-Control-Allow-Origin': origin || '*',
+          'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ ok: true, message: 'Form received' })
@@ -77,7 +72,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 400,
         headers: {
-          'Access-Control-Allow-Origin': origin || '*',
+          'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ error: 'Missing required fields: name, email, message' })
@@ -92,7 +87,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 200,
         headers: {
-          'Access-Control-Allow-Origin': origin || '*',
+          'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
@@ -129,7 +124,7 @@ exports.handler = async (event) => {
       return { 
         statusCode: 502, 
         headers: {
-          'Access-Control-Allow-Origin': origin || '*',
+          'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
@@ -141,7 +136,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': origin || '*',
+        'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
