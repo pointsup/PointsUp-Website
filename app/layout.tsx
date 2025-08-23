@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { GoogleAnalytics } from '@next/third-parties/google'
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
     other: [
       { rel: 'android-chrome-192x192', url: '/android-chrome-192x192.png' },
       { rel: 'android-chrome-512x512', url: '/android-chrome-512x512.png' },
@@ -47,7 +45,6 @@ export default function RootLayout({
       </head>
       <body className={inter.className} suppressHydrationWarning>
         {children}
-        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
       </body>
     </html>
   )

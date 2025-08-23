@@ -25,15 +25,6 @@ export function ContactForm() {
     setIsSubmitting(true)
     setStatusMessage("Sending...")
     
-    // Google Analytics tracking
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'form_submit', {
-        event_category: 'Contact Form',
-        event_label: 'Contact Form Submission',
-        value: 1
-      })
-    }
-    
     try {
       console.log('Submitting form data:', formData);
       
